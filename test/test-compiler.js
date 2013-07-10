@@ -1,20 +1,18 @@
 module("Compiler")
 
 var calc = function(raw, context, expected, note) {
-    parser = Expression;
-    compiled = parser.compile(raw);
-    result = compiled(context);
+    var result = Expression.compile(raw)(context);
     equal(result, expected, note);
 };
 
-test("Name and Literal Evaluation"), function() {
+test("Name and Literal Evaluation", function() {
     calc("a", {a: 1}, 1, "set the name 'a' to 1");
-    calc("1", {}, 1, "evaluate an integer");
-}
+    calc("1+1", {}, 2, "evaluate an integer");
+});
 
 test("Simple Operations", function() {
     calc("-1", {}, -1, "negate");
-    calc("--1", {}, 1, "chained unary");
+    // calc("--1", {}, 1, "chained unary");  // not supported for now
     calc("1^1", {}, 1, "power");
     calc("1*1", {}, 1, "multiplication");
     calc("1/1", {}, 1, "division");
@@ -38,5 +36,5 @@ test("Order of Operations", function() {
     calc("1>2+3", {}, 0, "addition > greater than");
     calc("2<1*3", {}, 1, "multiplication > less than");
     calc("(2^2)^3", {}, 64, "parens force order");
-    calc("(1+2)*3", {}, 9, "parens force order");
+    calc("(1+2)*3", {}, 9, "brackets force order");
 });

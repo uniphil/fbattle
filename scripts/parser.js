@@ -142,4 +142,4 @@ var Expression = (function(Expression) {
 
     return Expression;
 
-})(Expression || {});
+})(Expression = Expression || {});
