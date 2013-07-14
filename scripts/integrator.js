@@ -13,7 +13,7 @@ var newton = function(position, velocity, frame_step, accelerator) {
 };
 
 
-var rk4 = function(Vec) {
+var rk4 = (function(Vec) {
     var sum = Vec.sum,
         scale = Vec.scale;
 
@@ -28,18 +28,17 @@ var rk4 = function(Vec) {
 
     return function(position, velocity, frame_step, accelerator) {
         // runge-kutta, aka the bad-ass one
+        var acceleration = accelerator(position, velocity);
 
-        var acceleration = accelerator(position, velocity),
-
-            pos2 = plus_delta(position, velocity, frame_step / 2.0),
+        var pos2 = plus_delta(position, velocity, frame_step / 2.0),
             vel2 = plus_delta(velocity, acceleration, frame_step / 2.0); 
-        var accel2 = accelerator(pos2, vel2),
+        var accel2 = accelerator(pos2, vel2);
 
-            pos3 = plus_delta(position, vel2, frame_step / 2.0),
+        var pos3 = plus_delta(position, vel2, frame_step / 2.0),
             vel3 = plus_delta(velocity, accel2, frame_step / 2.0);
-        var accel3 = accelerator(pos3, vel3),
+        var accel3 = accelerator(pos3, vel3);
 
-            pos4 = plus_delta(position, vel3, frame_step),
+        var pos4 = plus_delta(position, vel3, frame_step),
             vel4 = plus_delta(velocity, accel3, frame_step);
         var accel4 = accelerator(pos4, vel4);
 
@@ -51,7 +50,7 @@ var rk4 = function(Vec) {
             velocity: plus_delta(velocity, rk_accel, frame_step)
         };
     };
-}(Vec);
+})(Vec);
 
 
 var accelegrator = rk4;  // just use rk4. just do it.

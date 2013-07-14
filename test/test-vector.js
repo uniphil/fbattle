@@ -22,6 +22,13 @@ test("diff", function() {
     deepEqual(Vec.diff([1], [1]), [0], "subtract to nothing");
     deepEqual(Vec.diff([1, 1], [1]), [0, 1], "zero-extend rhs");
     deepEqual(Vec.diff([1], [1, 1]), [0], "chop rhs");
+    (function() {
+        var aliased_a = [1],
+            aliased_b = [2];
+        Vec.diff(aliased_a, aliased_b);
+        deepEqual(aliased_a, [1], "side-effect");
+        deepEqual(aliased_b, [2], "side-effect");
+    })();
 });
 
 test("scale", function() {
@@ -31,6 +38,11 @@ test("scale", function() {
     deepEqual(Vec.scale([1], 1), [1], "scale identity");
     deepEqual(Vec.scale([1], 2), [2], "scale up");
     deepEqual(Vec.scale([1, 1], 2), [2, 2], "scale 2d");
+    (function() {
+        var some_vector = [1];
+        Vec.scale(some_vector, 2);
+        deepEqual(some_vector, [1], "no side-effect");
+    })();
 });
 
 test("magnitude", function() {

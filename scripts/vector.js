@@ -13,6 +13,16 @@ var Vec = (function() {
         return extended;
     };
 
+    var copy = function(vector) {
+        /* copy the contents of a vector to a new one */
+        var new_vector = [],
+            v_ind;
+        for (v_ind = 0; v_ind < vector.length; v_ind++) {
+            new_vector[v_ind] = vector[v_ind];
+        }
+        return new_vector;
+    }
+
     Vec.sum = function() {
         /* component-wise addition of any number of vectors.
            vec.sum([0, 1], [1, 1]) === [1, 2];
@@ -38,7 +48,7 @@ var Vec = (function() {
            vec.diff([1, 2], [1, 1]) === [0, 1];
            to subtract n vectors, do vec.diff(v1, sum(v2, v3 .. vn));
            The returned vector will be the same length as vector a. */
-        var diffed = a,
+        var diffed = copy(a),
             comp;
         for (comp = 0; comp < a.length && comp < b.length; comp++) {
             diffed[comp] -= b[comp];
@@ -49,7 +59,7 @@ var Vec = (function() {
     Vec.scale = function(vector, scale) {
         /* scale a vector. blah blah.
            vec.scale([1], 10) === [10]; */
-        var scaled = vector,
+        var scaled = copy(vector),
             comp;
         for (comp = 0; comp < vector.length; comp++) {
             scaled[comp] *= scale;
